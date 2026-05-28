@@ -1,0 +1,23 @@
+services:
+  huggingface:
+    image: huggingface/transformers-pytorch-gpu:latest
+    container_name: huggingface
+    working_dir: /workspace
+    ipc: host
+    stdin_open: true
+    tty: true
+    shm_size: "128gb"
+    gpus: all
+    environment:
+      HF_HOME: /workspace/.cache/huggingface
+      TRANSFORMERS_CACHE: /workspace/.cache/huggingface/hub
+      HF_DATASETS_CACHE: /workspace/.cache/huggingface/datasets
+      HF_TOKEN: ${HF_TOKEN:-}
+    volumes:
+      - ./workspace:/workspace
+      - hf-hub-cache:/workspace/.cache/huggingface
+      - /mnt/datasets:/datasets
+    command: sleep infinity
+
+volumes:
+  hf-hub-cache:
